@@ -3,20 +3,20 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Virtual environments
+# Environnements virtuels
 venv/
 .venv/
 env/
 
-# Databases
+# Bases de données
 *.db
 *.sqlite3
 
-# Stored files (keep the folder, ignore its contents)
+# Fichiers stockés (on garde le dossier, on ignore son contenu)
 api/storage/*
 !api/storage/.gitkeep
 
-# Node / frontend
+# Node / web
 node_modules/
 dist/
 dist-ssr/

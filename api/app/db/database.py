@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-# SQLite local file stored in the backend working directory.
+# Fichier SQLite local, stocké dans le répertoire de travail de l'API.
 SQLALCHEMY_DATABASE_URL = "sqlite:///./cloudini.db"
 
-# check_same_thread is required for SQLite when used with FastAPI's thread pool.
+# check_same_thread est requis pour SQLite avec le pool de threads de FastAPI.
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
     connect_args={"check_same_thread": False},
@@ -16,7 +16,7 @@ Base = declarative_base()
 
 
 def get_db():
-    """FastAPI dependency that yields a database session and always closes it."""
+    """Dépendance FastAPI qui fournit une session de base de données et la ferme toujours."""
     db = SessionLocal()
     try:
         yield db

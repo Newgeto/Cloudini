@@ -20,7 +20,7 @@ jobs:
           cache: pip
           cache-dependency-path: api/requirements.txt
       - run: pip install -r requirements.txt
-      - run: python -c "import app.main; print('api import ok')"
+      - run: python -c "import app.main; print('import de l API réussi')"
 
   web:
     runs-on: ubuntu-latest
