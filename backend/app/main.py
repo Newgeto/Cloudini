@@ -2,8 +2,8 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-import models  # noqa: F401  (ensures models are registered on Base before create_all)
-from database import Base, engine
+from app import models  # noqa: F401  (registers models on Base before create_all)
+from app.db.database import Base, engine
 
 
 @asynccontextmanager

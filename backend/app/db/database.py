@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-# SQLite local file stored next to the backend package.
+# SQLite local file stored in the backend working directory.
 SQLALCHEMY_DATABASE_URL = "sqlite:///./cloudini.db"
 
 # check_same_thread is required for SQLite when used with FastAPI's thread pool.
