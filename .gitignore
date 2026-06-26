@@ -22,6 +22,11 @@ dist/
 dist-ssr/
 *.local
 
+# Variables d'environnement (garder uniquement les .env.example)
+.env
+.env.*
+!.env.example
+
 # IDE / OS
 .idea/
 .vscode/
