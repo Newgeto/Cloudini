@@ -4,15 +4,15 @@ Mini application de stockage de fichiers (style Dropbox simplifié).
 
 ## Stack
 
-- **Backend** : FastAPI (Python) + SQLAlchemy + SQLite
-- **Frontend** : React + Vite
+- **API** : FastAPI (Python) + SQLAlchemy + SQLite
+- **Web** : React + Vite + Tailwind CSS
 - **Auth** (prévue) : JWT via `passlib` + `python-jose`
-- **Stockage** : fichiers sur disque local (`backend/storage/`)
+- **Stockage** : fichiers sur disque local (`api/storage/`)
 
-## Backend
+## API
 
 ```bash
-cd backend
+cd api
 python -m venv venv
 venv\Scripts\Activate.ps1      # Windows PowerShell
 pip install -r requirements.txt
@@ -22,10 +22,10 @@ uvicorn app.main:app --reload
 - Health check : http://127.0.0.1:8000/ → `{"status": "ok"}`
 - Docs : http://127.0.0.1:8000/docs
 
-## Frontend
+## Web
 
 ```bash
-cd frontend
+cd web
 npm install
 npm run dev
 ```
