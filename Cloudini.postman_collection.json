@@ -1,0 +1,90 @@
+{
+  "info": {
+    "name": "Cloudini API",
+    "description": "Collection de test de l'API Cloudini (FastAPI). Le token JWT est automatiquement sauvegardé dans la variable {{access_token}} après un login réussi.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://127.0.0.1:8000", "type": "string" },
+    { "key": "access_token", "value": "", "type": "string" },
+    { "key": "email", "value": "yanis@test.fr", "type": "string" },
+    { "key": "password", "value": "motdepasse123", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Health check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/", "host": ["{{baseUrl}}"], "path": [""] }
+      }
+    },
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "register"]
+        }
+      }
+    },
+    {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json.access_token) {",
+              "    pm.collectionVariables.set('access_token', json.access_token);",
+              "    console.log('Token enregistré dans {{access_token}}');",
+              "}",
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Token présent', () => pm.expect(json.access_token).to.be.a('string'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "username", "value": "{{email}}", "type": "text" },
+            { "key": "password", "value": "{{password}}", "type": "text" }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "login"]
+        },
+        "description": "Le flux OAuth2 'password' attend des champs de formulaire : username (= email) et password."
+      }
+    },
+    {
+      "name": "Me (protégé)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{access_token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/me",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "me"]
+        }
+      }
+    }
+  ]
+}
