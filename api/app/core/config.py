@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 # Clé secrète de signature des JWT. À surcharger via la variable d'environnement
 # SECRET_KEY en production (ne jamais committer une vraie clé).
@@ -9,3 +10,6 @@ ALGORITHM = "HS256"
 
 # Durée de validité d'un token d'accès, en minutes.
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "60"))
+
+# Dossier de stockage des fichiers uploadés (relatif au répertoire de travail de l'API).
+STORAGE_DIR = Path(os.getenv("STORAGE_DIR", "storage"))

@@ -48,6 +48,22 @@ curl -X POST http://127.0.0.1:8000/auth/login \
 # Accès à une route protégée (remplace <TOKEN>)
 curl http://127.0.0.1:8000/auth/me \
   -H "Authorization: Bearer <TOKEN>"
+
+# Envoyer un fichier (multipart, champ "upload")
+curl -X POST http://127.0.0.1:8000/files \
+  -H "Authorization: Bearer <TOKEN>" \
+  -F "upload=@chemin/vers/mon_fichier.txt"
+
+# Lister ses fichiers
+curl http://127.0.0.1:8000/files -H "Authorization: Bearer <TOKEN>"
+
+# Télécharger un fichier (remplace <ID>)
+curl -OJ http://127.0.0.1:8000/files/<ID>/download \
+  -H "Authorization: Bearer <TOKEN>"
+
+# Supprimer un fichier
+curl -X DELETE http://127.0.0.1:8000/files/<ID> \
+  -H "Authorization: Bearer <TOKEN>"
 ```
 
 ## 5. Endpoints disponibles
@@ -58,6 +74,10 @@ curl http://127.0.0.1:8000/auth/me \
 | `POST` | `/auth/register` | non | Crée un utilisateur (`email`, `password`) |
 | `POST` | `/auth/login`    | non | Renvoie un token JWT (form `username`/`password`) |
 | `GET`  | `/auth/me`       | oui | Renvoie l'utilisateur authentifié |
+| `POST`   | `/files`                | oui | Envoie un fichier (multipart, champ `upload`) |
+| `GET`    | `/files`                | oui | Liste les fichiers de l'utilisateur |
+| `GET`    | `/files/{id}/download`  | oui | Télécharge un de ses fichiers |
+| `DELETE` | `/files/{id}`           | oui | Supprime un de ses fichiers |
 
 ## 6. Codes de réponse attendus
 
@@ -69,3 +89,6 @@ curl http://127.0.0.1:8000/auth/me \
 | Connexion réussie | `200` |
 | Mauvais identifiants | `401` |
 | Route protégée sans token / token invalide | `401` |
+| Upload réussi | `201` |
+| Suppression réussie | `204` |
+| Fichier d'un autre utilisateur / inexistant | `404` |
