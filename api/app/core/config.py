@@ -28,3 +28,18 @@ CORS_ORIGINS = [
     ).split(",")
     if origin.strip()
 ]
+
+# Taille maximale d'un fichier uploadé, en méga-octets.
+MAX_UPLOAD_MB = int(os.getenv("MAX_UPLOAD_MB", "10"))
+MAX_UPLOAD_SIZE = MAX_UPLOAD_MB * 1024 * 1024
+
+# Extensions de fichiers autorisées (sans le point), séparées par des virgules.
+# Laisser vide pour autoriser tous les types.
+ALLOWED_EXTENSIONS = {
+    ext.strip().lstrip(".").lower()
+    for ext in os.getenv(
+        "ALLOWED_EXTENSIONS",
+        "txt,md,csv,pdf,png,jpg,jpeg,gif,webp,doc,docx,xls,xlsx,zip",
+    ).split(",")
+    if ext.strip()
+}

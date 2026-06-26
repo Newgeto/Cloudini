@@ -75,7 +75,7 @@ curl -X DELETE http://127.0.0.1:8000/files/<ID> \
 | `POST` | `/auth/login`    | non | Renvoie un token JWT (form `username`/`password`) |
 | `GET`  | `/auth/me`       | oui | Renvoie l'utilisateur authentifié |
 | `POST`   | `/files`                | oui | Envoie un fichier (multipart, champ `upload`) |
-| `GET`    | `/files`                | oui | Liste les fichiers de l'utilisateur |
+| `GET`    | `/files`                | oui | Liste les fichiers (pagination : `?limit=50&offset=0`) |
 | `GET`    | `/files/{id}/download`  | oui | Télécharge un de ses fichiers |
 | `DELETE` | `/files/{id}`           | oui | Supprime un de ses fichiers |
 
@@ -92,3 +92,14 @@ curl -X DELETE http://127.0.0.1:8000/files/<ID> \
 | Upload réussi | `201` |
 | Suppression réussie | `204` |
 | Fichier d'un autre utilisateur / inexistant | `404` |
+| Fichier vide / aucun fichier | `400` |
+| Extension non autorisée | `415` |
+| Fichier trop volumineux (> `MAX_UPLOAD_MB`) | `413` |
+| `limit`/`offset` hors bornes | `422` |
+
+## 7. Limites de l'upload (configurables via `.env`)
+
+- `MAX_UPLOAD_MB` : taille maximale d'un fichier (défaut **10 Mo**).
+- `ALLOWED_EXTENSIONS` : extensions acceptées (vide = toutes). Défaut :
+  `txt, md, csv, pdf, png, jpg, jpeg, gif, webp, doc, docx, xls, xlsx, zip`.
+- `GET /files` est paginé : `limit` (1–100, défaut 50) et `offset` (≥ 0).
