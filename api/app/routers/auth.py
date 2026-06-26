@@ -7,7 +7,7 @@ from app.core import security
 from app.db.database import get_db
 from app.models.user import User
 from app.schemas.token import Token
-from app.schemas.user import UserCreate, UserRead
+from app.schemas.user import PasswordChange, UserCreate, UserRead
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -81,3 +81,22 @@ def get_current_user(
 def read_current_user(current_user: User = Depends(get_current_user)):
     """Renvoie l'utilisateur actuellement authentifié."""
     return current_user
+
+
+@router.put("/me/password")
+def change_password(
+    payload: PasswordChange,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Change le mot de passe de l'utilisateur courant."""
+    if not security.verify_password(payload.current_password, current_user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Mot de passe actuel incorrect.",
+        )
+
+    current_user.hashed_password = security.hash_password(payload.new_password)
+    db.add(current_user)
+    db.commit()
+    return {"message": "Mot de passe mis à jour."}

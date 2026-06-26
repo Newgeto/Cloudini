@@ -8,6 +8,13 @@ class UserCreate(BaseModel):
     password: str = Field(min_length=8)
 
 
+class PasswordChange(BaseModel):
+    """Données reçues pour changer le mot de passe."""
+
+    current_password: str = Field(min_length=8)
+    new_password: str = Field(min_length=8)
+
+
 class UserRead(BaseModel):
     """Données utilisateur renvoyées au client (jamais le mot de passe)."""
 

@@ -56,6 +56,12 @@ export const api = {
 
   me: () => request('/auth/me'),
 
+  changePassword: (currentPassword, newPassword) =>
+    request('/auth/me/password', {
+      method: 'PUT',
+      body: { current_password: currentPassword, new_password: newPassword },
+    }),
+
   listFiles: () => request('/files'),
 
   uploadFile(file) {
