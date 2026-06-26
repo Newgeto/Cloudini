@@ -6,6 +6,10 @@ import { CloudIcon, Spinner } from './Icons'
 // Écran d'authentification : split plein écran (marque à gauche, formulaire à droite).
 export default function AuthPage({ onAuthenticated }) {
   const [mode, setMode] = useState('login') // 'login' | 'register'
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [username, setUsername] = useState('')
+  const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -18,7 +22,16 @@ export default function AuthPage({ onAuthenticated }) {
     setError('')
     setLoading(true)
     try {
-      if (isRegister) await api.register(email, password)
+      if (isRegister) {
+        await api.register({
+          first_name: firstName,
+          last_name: lastName,
+          username,
+          phone,
+          email,
+          password,
+        })
+      }
       await api.login(email, password)
       const me = await api.me()
       onAuthenticated(me)
@@ -79,6 +92,76 @@ export default function AuthPage({ onAuthenticated }) {
           </p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+            {isRegister && (
+              <div key="register-fields" className="animate-fade-in-up space-y-5">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="firstName" className="mb-1.5 block text-sm font-medium text-slate-700">
+                      Prénom
+                    </label>
+                    <input
+                      id="firstName"
+                      type="text"
+                      autoComplete="given-name"
+                      required
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      placeholder="Marie"
+                      className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 shadow-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="lastName" className="mb-1.5 block text-sm font-medium text-slate-700">
+                      Nom
+                    </label>
+                    <input
+                      id="lastName"
+                      type="text"
+                      autoComplete="family-name"
+                      required
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      placeholder="Dupont"
+                      className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 shadow-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="username" className="mb-1.5 block text-sm font-medium text-slate-700">
+                    Nom d'utilisateur
+                  </label>
+                  <input
+                    id="username"
+                    type="text"
+                    autoComplete="username"
+                    required
+                    minLength={3}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="marie.dupont"
+                    className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 shadow-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-slate-700">
+                    Téléphone
+                  </label>
+                  <input
+                    id="phone"
+                    type="tel"
+                    autoComplete="tel"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="06 12 34 56 78"
+                    className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 shadow-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30"
+                  />
+                </div>
+              </div>
+            )}
+
             <div>
               <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-700">
                 Email

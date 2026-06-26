@@ -23,8 +23,17 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Cet email est déjà utilisé.",
         )
+    if db.query(User).filter(User.username == payload.username).first():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Ce nom d'utilisateur est déjà pris.",
+        )
     user = User(
         email=payload.email,
+        username=payload.username,
+        first_name=payload.first_name,
+        last_name=payload.last_name,
+        phone=payload.phone,
         hashed_password=security.hash_password(payload.password),
     )
     db.add(user)
