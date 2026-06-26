@@ -16,6 +16,12 @@ env/
 backend/storage/*
 !backend/storage/.gitkeep
 
+# Node / frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+
 # IDE / OS
 .idea/
 .vscode/
