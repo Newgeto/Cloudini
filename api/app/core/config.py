@@ -18,3 +18,13 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "60")
 
 # Dossier de stockage des fichiers uploadés (relatif au répertoire de travail de l'API).
 STORAGE_DIR = Path(os.getenv("STORAGE_DIR", "storage"))
+
+# Origines autorisées à appeler l'API depuis un navigateur (CORS).
+# Liste séparée par des virgules ; défaut = le serveur de dev Vite.
+CORS_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        "CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173"
+    ).split(",")
+    if origin.strip()
+]
